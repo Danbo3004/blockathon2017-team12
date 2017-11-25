@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hello World DApp</title>
+  <title>Guard Vote - Real time, fair and transparent voting</title>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
   <style>
@@ -11,7 +11,7 @@
   </style>
 </head>
 <body class="container">
-  <h1>A Simple Hello World Voting Application</h1>
+  <h1>Guard Vote - Real time, fair and transparent voting</h1>
   <div class="col-sm-7 margin-top-3">
     <h2>Candidates</h2>
     <div class="table-responsive">
@@ -32,7 +32,7 @@
       <input type="text" id="candidate" placeholder="Enter the candidate name"/>
       <br>
       <br>
-      <input type="text" id="vote-tokens" placeholder="Total no. of tokens to vote"/>
+      <input type="text" id="vote-tokens" value="1" disabled="true" placeholder="Total no. of tokens to vote"/>
       <br>
       <br>
       <a href="#" onclick="voteForCandidate()" class="btn btn-primary">Vote</a>
@@ -66,7 +66,7 @@
       <h2>Purchase Tokens</h2>
       <div class="col-sm-12">
         <div id="buy-msg"></div>
-        <input type="text" id="buy" class="col-sm-8" placeholder="Number of tokens to buy"/>&nbsp;
+        <input type="text" id="buy" value="1" disabled="true" class="col-sm-8" placeholder="Number of tokens to buy"/>&nbsp;
         <a href="#" onclick="buyTokens()" class="btn btn-primary">Buy</a>
       </div>
     </div>
