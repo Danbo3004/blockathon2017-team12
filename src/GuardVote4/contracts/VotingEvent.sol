@@ -3,7 +3,14 @@ pragma solidity ^0.4.0;
 contract VotingEvent {
     
     uint public constant MAX_TIME = 0xFFFFFFFF;
+
+    enum State {
+        NotStarted,
+        Voting,
+        Closed
+    }
     
+    string public name;
     address public admin;
     address public organizer;
     
@@ -26,11 +33,14 @@ contract VotingEvent {
     Vote[] votes;
 
     function VotingEvent(
+        string _name,
         address _organizer,
         bytes32[] _candidateNames)
         public
     {
         admin = msg.sender;
+
+        name = _name;
         organizer = _organizer;
         // state = State.NotStarted;
         
@@ -88,6 +98,17 @@ contract VotingEvent {
         }
     }
     
+    function getState() public view returns (State) {
+        uint timestamp = block.timestamp;
+        if (startTime == 0 || timestamp < startTime) {
+            return State.NotStarted;
+        } else if (timestamp <= endTime) {
+            return State.Voting;
+        } else {
+            return State.Closed;
+        }
+    }
+    
     modifier onlyVotingTime(uint timestamp) {
         require(startTime > 0); // started
         require(timestamp > startTime && timestamp < endTime);
@@ -139,5 +160,5 @@ contract VotingEvent {
         name = candidateNames[index];
         votesReceived = candidateVotesReceived[index];
     }
-    
+
 }

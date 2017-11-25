@@ -1,5 +1,5 @@
 // Import the page's CSS. Webpack will know what to do with it.
-// import "../stylesheets/app.css";
+import "../stylesheets/app.css";
 
 // Import libraries we need.
 // import { default as Web3} from 'web3';
@@ -97,7 +97,7 @@ function populateCandidates() {
       setupCandidateRows();
       populateCandidateVotes();
       populateTokenData();
-    });
+    }); 
   });
 }
 
@@ -140,6 +140,65 @@ function populateTokenData() {
   });
 }
 
+/**
+ * Added by Nam
+ */
+import votingEvent_artifacts from '../../build/contracts/VotingEvent.json';
+
+var VotingEvent = contract(votingEvent_artifacts);
+
+window.myCreateEvent = function(obj) {
+  // web3.eth.contract(VotingEvent).new(votingEvent_artifacts.abi, "0x6e88b5a88716cf33d704a9da190c96f1443dbb1c", );
+  // var votingEventInstance = VotingEvent.new(
+  //   web3.eth.accounts[1],
+  //   ["A", "B", "C"],
+  //   {from: web3.eth.accounts[0], gas: 1000000});
+
+  // console.log(votingEventInstance.getState.call());
+
+  // VotingEvent.deployed().then(function(votingEventInstance)) {
+
+  // }
+}
+
+
+var votingEventAddresses = ["0xf9800f5f21b404d7d99f96d7525bf8c2461d9b5f", "0xd7bb8d017d2f3bc2ed6307fea4990a2375483ebc"];
+var votingEvents;
+
+function loadExistingVotingEvents() {
+  votingEvents = [];
+  for (var i = 0; i < votingEventAddresses.length; ++i) {
+    var _instance = VotingEvent.at(votingEventAddresses[i]);
+    var _address = _instance.address;
+
+    _instance.name.call().then((rs) => { 
+      votingEvents.push({
+        instance: _instance,
+        address: _address,
+        name: rs,
+      })
+    });
+  }
+  // setupEventRows();
+  console.log(votingEvents);
+}
+
+window.setupEventRows = function() {
+  console.log(votingEvents);
+
+  var i = 0;
+
+  votingEvents.forEach(function (votingEvent) {
+    console.log(votingEvent.name);
+    $("#votingEvent-rows").append("<tr><td><a href='#' onclick='showEvent(" + i + ")'>"  + votingEvent.name + "</a></td><td><a href='https://etherscan.io/address/0xdba5b14e58ce9baa956d77eec99c05921255d4f7'>" + votingEvent.address + "</a></td></tr>");
+  });
+}
+
+window.showEvent = function() {
+  $("eventDetails").show();
+}
+
+
 $( document ).ready(function() {
   if (typeof web3 !== 'undefined') {
     console.warn("Using web3 detected from external source like Metamask")
@@ -154,4 +213,10 @@ $( document ).ready(function() {
   Voting.setProvider(web3.currentProvider);
   populateCandidates();
 
+  VotingEvent.setProvider(web3.currentProvider);
+  loadExistingVotingEvents();
+
 });
+
+
+

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Guard Vote - Dashboard</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <style>
+        .margin-top-3 {
+            margin-top: 3em;
+        }
+
+        input,
+        textarea {
+            width: 500px;
+        }
+
+        table td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+
+<body class="container">
+    <h1>Guard Vote - Dashboard</h1>
+    <div class="col-sm-7 margin-top-3">
+        <h2>Create Election</h2>
+        <div class="col-sm-offset-1 col-sm-4 margin-top-3">
+            <table cellpadding="10">
+                <tr>
+                    <td>
+                        Event name
+                    </td>
+                    <td>
+                        <input type="text" id="eventName" placeholder="Event name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap>
+                        Candidate names
+                    </td>
+                    <td>
+                        <textarea id="candidateNames" rows="5" placeholder="Candidate names"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Start
+                    </td>
+                    <td>
+                        <input type="date" id="startDate" style="width: 200px" />
+                        <input type="time" id="startTime" style="width: 200px" />
+                        <input type="button" value="Now" style="width: 90px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        End
+                    </td>
+                    <td nowrap>
+                        <input type="date" id="endDate" style="width: 200px" />
+                        <input type="time" id="endTime" style="width: 200px" />
+                        <input type="checkbox" id="noEnd" style="width: 10px" />
+                        <label for="noEnd">No end</label>
+                    </td>
+                </tr>
+            </table>
+            <a href="#" onclick="myCreateEvent()" class="btn btn-primary">Create</a>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="app.js"></script>
+
+</html>
