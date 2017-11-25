@@ -23,7 +23,7 @@ let candidates = {}
 
 let tokenPrice = null;
 
-window.voteForCandidate = function(candidate) {
+window.voteForCandidate = function (candidate) {
   let candidateName = $("#candidate").val();
   let voteTokens = $("#vote-tokens").val();
   $("#msg").html("Vote has been submitted. The vote count will increment as soon as the vote is recorded on the blockchain. Please wait.")
@@ -34,10 +34,10 @@ window.voteForCandidate = function(candidate) {
    * in Truffle returns a promise which is why we have used then()
    * everywhere we have a transaction call
    */
-  Voting.deployed().then(function(contractInstance) {
-    contractInstance.voteForCandidate(candidateName, voteTokens, {gas: 140000, from: web3.eth.accounts[0]}).then(function() {
+  Voting.deployed().then(function (contractInstance) {
+    contractInstance.voteForCandidate(candidateName, voteTokens, { gas: 140000, from: web3.eth.accounts[0] }).then(function () {
       let div_id = candidates[candidateName];
-      return contractInstance.totalVotesFor.call(candidateName).then(function(v) {
+      return contractInstance.totalVotesFor.call(candidateName).then(function (v) {
         $("#" + div_id).html(v.toString());
         $("#msg").html("");
       });
@@ -50,14 +50,14 @@ window.voteForCandidate = function(candidate) {
  * from Ether to Wei.
  */
 
-window.buyTokens = function() {
+window.buyTokens = function () {
   let tokensToBuy = $("#buy").val();
   let price = tokensToBuy * tokenPrice;
   $("#buy-msg").html("Purchase order has been submitted. Please wait.");
-  Voting.deployed().then(function(contractInstance) {
-    contractInstance.buy({value: web3.toWei(price, 'ether'), from: web3.eth.accounts[0]}).then(function(v) {
+  Voting.deployed().then(function (contractInstance) {
+    contractInstance.buy({ value: web3.toWei(price, 'ether'), from: web3.eth.accounts[0] }).then(function (v) {
       $("#buy-msg").html("");
-      web3.eth.getBalance(contractInstance.address, function(error, result) {
+      web3.eth.getBalance(contractInstance.address, function (error, result) {
         $("#contract-balance").html(web3.fromWei(result.toString()) + " Ether");
       });
     })
@@ -65,16 +65,16 @@ window.buyTokens = function() {
   populateTokenData();
 }
 
-window.lookupVoterInfo = function() {
+window.lookupVoterInfo = function () {
   let address = $("#voter-info").val();
-  Voting.deployed().then(function(contractInstance) {
-    contractInstance.voterDetails.call(address).then(function(v) {
+  Voting.deployed().then(function (contractInstance) {
+    contractInstance.voterDetails.call(address).then(function (v) {
       $("#tokens-bought").html("Total Tokens bought: " + v[0].toString());
       let votesPerCandidate = v[1];
       $("#votes-cast").empty();
       $("#votes-cast").append("Votes cast per candidate: <br>");
       let allCandidates = Object.keys(candidates);
-      for(let i=0; i < allCandidates.length; i++) {
+      for (let i = 0; i < allCandidates.length; i++) {
         $("#votes-cast").append(allCandidates[i] + ": " + votesPerCandidate[i] + "<br>");
       }
     });
@@ -86,9 +86,9 @@ window.lookupVoterInfo = function() {
  * table in the UI with all the candidates and the votes they have received.
  */
 function populateCandidates() {
-  Voting.deployed().then(function(contractInstance) {
-    contractInstance.allCandidates.call().then(function(candidateArray) {
-      for(let i=0; i < candidateArray.length; i++) {
+  Voting.deployed().then(function (contractInstance) {
+    contractInstance.allCandidates.call().then(function (candidateArray) {
+      for (let i = 0; i < candidateArray.length; i++) {
         /* We store the candidate names as bytes32 on the blockchain. We use the
          * handy toUtf8 method to convert from bytes32 to string
          */
@@ -97,7 +97,7 @@ function populateCandidates() {
       setupCandidateRows();
       populateCandidateVotes();
       populateTokenData();
-    }); 
+    });
   });
 }
 
@@ -105,8 +105,8 @@ function populateCandidateVotes() {
   let candidateNames = Object.keys(candidates);
   for (var i = 0; i < candidateNames.length; i++) {
     let name = candidateNames[i];
-    Voting.deployed().then(function(contractInstance) {
-      contractInstance.totalVotesFor.call(name).then(function(v) {
+    Voting.deployed().then(function (contractInstance) {
+      contractInstance.totalVotesFor.call(name).then(function (v) {
         $("#" + candidates[name]).html(v.toString());
       });
     });
@@ -114,7 +114,7 @@ function populateCandidateVotes() {
 }
 
 function setupCandidateRows() {
-  Object.keys(candidates).forEach(function (candidate) { 
+  Object.keys(candidates).forEach(function (candidate) {
     $("#candidate-rows").append("<tr><td>" + candidate + "</td><td id='" + candidates[candidate] + "'></td></tr>");
   });
 }
@@ -123,18 +123,18 @@ function setupCandidateRows() {
  * each token and display in the UI
  */
 function populateTokenData() {
-  Voting.deployed().then(function(contractInstance) {
-    contractInstance.totalTokens().then(function(v) {
+  Voting.deployed().then(function (contractInstance) {
+    contractInstance.totalTokens().then(function (v) {
       $("#tokens-total").html(v.toString());
     });
-    contractInstance.tokensSold.call().then(function(v) {
+    contractInstance.tokensSold.call().then(function (v) {
       $("#tokens-sold").html(v.toString());
     });
-    contractInstance.tokenPrice().then(function(v) {
+    contractInstance.tokenPrice().then(function (v) {
       tokenPrice = parseFloat(web3.fromWei(v.toString()));
       $("#token-cost").html(tokenPrice + " Ether");
     });
-    web3.eth.getBalance(contractInstance.address, function(error, result) {
+    web3.eth.getBalance(contractInstance.address, function (error, result) {
       $("#contract-balance").html(web3.fromWei(result.toString()) + " Ether");
     });
   });
@@ -147,7 +147,7 @@ import votingEvent_artifacts from '../../build/contracts/VotingEvent.json';
 
 var VotingEvent = contract(votingEvent_artifacts);
 
-window.myCreateEvent = function(obj) {
+window.myCreateEvent = function (obj) {
   // web3.eth.contract(VotingEvent).new(votingEvent_artifacts.abi, "0x6e88b5a88716cf33d704a9da190c96f1443dbb1c", );
   // var votingEventInstance = VotingEvent.new(
   //   web3.eth.accounts[1],
@@ -162,44 +162,168 @@ window.myCreateEvent = function(obj) {
 }
 
 
-var votingEventAddresses = ["0xf9800f5f21b404d7d99f96d7525bf8c2461d9b5f", "0xd7bb8d017d2f3bc2ed6307fea4990a2375483ebc"];
+var votingEventAddresses = ["0xc9518bfdf61899b02c179a9ec98a5d600ba896b8", "0x25b7c5a2ef4553ea80548f8be608039443abdc90"];
 var votingEvents;
+var votingEventsLoaded = false;
 
 function loadExistingVotingEvents() {
   votingEvents = [];
-  for (var i = 0; i < votingEventAddresses.length; ++i) {
-    var _instance = VotingEvent.at(votingEventAddresses[i]);
-    var _address = _instance.address;
+  console.log(votingEvents.length);
 
-    _instance.name.call().then((rs) => { 
-      votingEvents.push({
-        instance: _instance,
-        address: _address,
-        name: rs,
-      })
-    });
-  }
+  var count = 0;
+  var async = require('async');
+  async.whilst(
+    function () { return count < votingEventAddresses.length; },
+    function (callback) {
+      var _instance = VotingEvent.at(votingEventAddresses[count]);
+      var _address = _instance.address;
+      // var _name = _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (rs, err) {
+      //   console.log(rs);
+      //   return new Promise((reject, resolve) => {
+      //     if (err)
+      //       return reject(err);
+      //     else
+      //       return resolve(rs);
+      //   })
+      // }).then((name) => {
+      //   votingEvents[count] = {
+      //     instance: _instance,
+      //     address: _address,
+      //     name: name,
+      //   }, function(err) {
+      //     console.log(err); // Error: "It broke"
+      //   }
+      // });
+
+      _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (rs, err) {
+        console.log(count + " " + rs);
+        votingEvents[count] = {
+          instance: _instance,
+          address: _address,
+          name: rs,
+        }
+        count++;
+        callback();
+      });
+    },
+    function (err, n) {
+      // 5 seconds have passed, n = 5
+    }
+  );
+
+  // for (var i = 0; i < votingEventAddresses.length; ++i) {
+  //   var _instance = VotingEvent.at(votingEventAddresses[i]);
+  //   var _address = _instance.address;
+  //   var _name = _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (rs, err) {
+  //     console.log(rs);
+  //     return new Promise((reject, cb) => {
+  //       if (err)
+  //         return reject(err);
+  //       else
+  //         return cb(rs);
+  //     })
+  //   }).then((name) => {
+
+  //   });
+
+  //   var _name = _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (rs, err) {
+  //     console.log(rs);
+  //     votingEvents[i] = {
+  //       instance: _instance,
+  //       address: _address,
+  //       name: rs,
+  //     }
+  //   });
+
+  // }
   // setupEventRows();
   console.log(votingEvents);
 }
 
-window.setupEventRows = function() {
+function loadVotingEvent(addr) {
+  var _instance = VotingEvent.at(addr);
+  var _address = _instance.address;
+  _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (name, err) {
+    return {
+      instance: _instance,
+      address: _address,
+      name: name,
+    }
+    callback();
+  });
+}
+
+window.setupEventRows = function () {
   console.log(votingEvents);
 
   var i = 0;
 
+  // $("#votingEvent-rows").clear();
+
   votingEvents.forEach(function (votingEvent) {
     console.log(votingEvent.name);
-    $("#votingEvent-rows").append("<tr><td><a href='#' onclick='showEvent(" + i + ")'>"  + votingEvent.name + "</a></td><td><a href='https://etherscan.io/address/0xdba5b14e58ce9baa956d77eec99c05921255d4f7'>" + votingEvent.address + "</a></td></tr>");
+    $("#votingEvent-rows").append(
+      "<tr><td><a href='event.html?addr=" + votingEvent.address + "&name=" + votingEvent.name + "'>"
+      + votingEvent.name
+      + "</a></td><td><a href='https://etherscan.io/address/0xdba5b14e58ce9baa956d77eec99c05921255d4f7'>" + votingEvent.address + "</a></td></tr>");
   });
 }
 
-window.showEvent = function() {
-  $("eventDetails").show();
+
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+var currentVotingEvent;
+
+function showEventDetails() {
+  var addr = getParameterByName('addr');
+  var name = getParameterByName('name');
+  currentVotingEvent = loadVotingEvent(addr);
+  // console.log(currentVotingEvent);
+  $('#eventName').text(name);
+}
+
+window.loadVotingEventResults = function () {
+
+  console.log('load results');
+  
+  // Load google charts
+  google.charts.load('current', { 'packages': ['corechart'] });
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Draw the chart and set the chart values
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Task', 'Hours per Day'],
+      ['Work', 8],
+      ['Eat', 2],
+      ['TV', 4],
+      ['Gym', 2],
+      ['Sleep', 8]
+    ]);
+
+    // Optional; add a title and set the width and height of the chart
+    var options = { 'title': 'Voting results', 'width': 550, 'height': 400 };
+
+    // Display the chart inside the <div> element with id="piechart"
+    console.log(document.getElementById('piechart'));
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(data, options);
+  }
+
 }
 
 
-$( document ).ready(function() {
+
+
+$(document).ready(function () {
   if (typeof web3 !== 'undefined') {
     console.warn("Using web3 detected from external source like Metamask")
     // Use Mist/MetaMask's provider
@@ -215,6 +339,10 @@ $( document ).ready(function() {
 
   VotingEvent.setProvider(web3.currentProvider);
   loadExistingVotingEvents();
+
+  if ($('#eventName').length) {
+    showEventDetails();
+  }
 
 });
 

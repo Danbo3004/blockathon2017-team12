@@ -21,6 +21,11 @@ module.exports = {
       { from: './app/event.html', to: "event.html" }
     ]),
 
+    new CopyWebpackPlugin([
+      { from: './app/events.html', to: "events.html" }
+    ]),
+
+
   ],
   module: {
     rules: [
