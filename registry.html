@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Guard Vote - Election</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <style>
+    .margin-top-3 {
+      margin-top: 3em;
+    }
+  </style>
+</head>
+<body class="container">
+  <h1>Guard Vote - Registry</h1>
+  <div class="col-sm-7 margin-top-3">
+    <div class="container-fluid">
+      <h2>Complete the form to run your election</h2>
+      <div id="msg"></div>
+      <input type="text" id="candidate" placeholder="Enter name"/>
+      <br>
+      <br>
+      <input type="text" id="vote-tokens" placeholder="Phone number"/>
+      <br>
+      <br>
+      <input type="text" id="vote-tokens" placeholder="Birthday"/>
+      <br>
+      <br>
+      <input type="text" id="vote-tokens" placeholder="ID card"/>
+      <br>
+      <br>
+      <input type="text" id="vote-tokens" placeholder="Issue date"/>
+      <br>
+      <br>
+      <input type="text" id="vote-tokens" placeholder="Address"/>
+      <br>
+      <br>
+	  <label>Copy of ID</label>
+      <input type="file" id="vote-tokens" placeholder="Copy of ID"/>
+      <br>
+      <br>
+      <a href="#" onclick="createElection()" class="btn btn-primary">Create</a>
+    </div>
+  </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="app.js"></script>
+</html>
