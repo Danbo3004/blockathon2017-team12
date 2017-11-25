@@ -13,9 +13,13 @@ npm install -g truffle
 
 npm install -g webpack
 
+truffle unbox webpack
+
 npm install
 
-truffle unbox webpack
+npm install ethereumjs-wallet
+
+npm install web3-provider-engine
 
 #truffle migrate --reset
 
@@ -24,5 +28,9 @@ truffle unbox webpack
 testrpc
 
 truffle migrate
+#or
+truffle migrate --network development
+# or
+truffle migrate --network rinkeby
 
 npm run dev
