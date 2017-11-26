@@ -23,6 +23,18 @@
           </tr>
         </thead>
         <tbody id="candidate-rows">
+          <tr>
+            <td>Rama</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Nick</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>Rose</td>
+            <td>1</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -38,12 +50,10 @@
 	// Draw the chart and set the chart values
 	function drawChart() {
 	  var data = google.visualization.arrayToDataTable([
-	  ['Task', 'Hours per Day'],
-	  ['Work', 8],
-	  ['Eat', 2],
-	  ['TV', 4],
-	  ['Gym', 2],
-	  ['Sleep', 8]
+	  ['Candidate', 'Count'],
+	  ['Rama', 1],
+	  ['Nick', 3],
+	  ['Rose', 1]
 	]);
 
 	  // Optional; add a title and set the width and height of the chart
@@ -65,10 +75,10 @@
       <input type="text" id="vote-tokens" class="col-sm-8" placeholder="Organizer"/>
       <br>
       <br>
-      <input type="text" id="vote-tokens" class="col-sm-8" placeholder="Start date"/>
+      <input type="date" id="vote-tokens" class="col-sm-8" placeholder="Start date"/>
       <br>
       <br>
-      <input type="text" id="vote-tokens" class="col-sm-8" placeholder="End date"/>
+      <input type="date" id="vote-tokens" class="col-sm-8" placeholder="End date"/>
       <br>
       <br>
       <a href="#" onclick="createElection()" class="btn btn-primary">Create</a>
