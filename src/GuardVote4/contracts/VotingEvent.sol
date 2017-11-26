@@ -14,6 +14,9 @@ contract VotingEvent {
     address public admin;
     address public organizer;
     
+    // mapping (uint => string) candidateList;
+    // uint candidateListSize;
+
     bytes32[] public candidateNames;
     uint[] public candidateVotesReceived;
     
@@ -119,6 +122,18 @@ contract VotingEvent {
         require(candidateIndex < candidateNames.length);
         _;
     }
+
+    function getNumberOfCandidates() public view returns(uint) {
+        return candidateNames.length;
+    }
+
+    function getCandidateNames() view public returns (bytes32[]) {
+        return candidateNames;
+    }
+    
+    function getCandidateVotesReceived() view public returns (uint[]) {
+        return candidateVotesReceived;
+    }
     
     function voteForCandidate(bytes32 voterHashCode, uint candidateIndex, uint timeStamp)
         public
@@ -144,7 +159,6 @@ contract VotingEvent {
         view
         returns(
             uint index,
-            bytes32 name,
             uint votesReceived)
     {
         uint winnerCandidateIndex = 0;
@@ -157,8 +171,16 @@ contract VotingEvent {
         }
         
         index = winnerCandidateIndex;
-        name = candidateNames[index];
         votesReceived = candidateVotesReceived[index];
     }
+
+    function getCandidateName(uint index) public view returns(bytes32) {
+        return candidateNames[index];
+    }
+
+    function getCandidateVoteReceived(uint index) public view returns(uint) {
+        return candidateVotesReceived[index];
+    }
+    
 
 }

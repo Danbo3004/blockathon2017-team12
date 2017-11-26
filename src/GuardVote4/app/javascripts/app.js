@@ -154,7 +154,6 @@ window.myCreateEvent = function (obj) {
   //   ["A", "B", "C"],
   //   {from: web3.eth.accounts[0], gas: 1000000});
 
-  // console.log(votingEventInstance.getState.call());
 
   // VotingEvent.deployed().then(function(votingEventInstance)) {
 
@@ -162,13 +161,38 @@ window.myCreateEvent = function (obj) {
 }
 
 
-var votingEventAddresses = ["0xc9518bfdf61899b02c179a9ec98a5d600ba896b8", "0x25b7c5a2ef4553ea80548f8be608039443abdc90"];
+var votingEventAddresses = ["0x55ac092eb5ac1d60fbb1d0238b7fa5d9ce175b87", "0x6a9fbd0fc63a47e7592cd6d6f66900d45b25828b"];
+var votingEventInfo = [  
+  {
+    organizer: 'WC 2018',
+    candidates: ['Brazil', 'France', 'Germany', 'Spain'],
+    voteData: [
+      ['Candidate', 'Votes'],
+      ['Brazil', 15],
+      ['France', 6],
+      ['Germany', 12],
+      ['Spain', 9],
+    ]
+  },
+  {
+    organizer: 'Vietnam Diva',
+    candidates: ['Hong Nhung', 'My Linh', 'Thanh Lam', 'Thu Ha'],
+    voteData: [
+      ['Candidate', 'Votes'],
+      ['Hong Nhung', 18],
+      ['My Linh', 20],
+      ['Thanh Lam', 8],
+      ['Tran Thu Ha', 12],
+    ]
+  },
+]
+
+
 var votingEvents;
 var votingEventsLoaded = false;
 
 function loadExistingVotingEvents() {
   votingEvents = [];
-  console.log(votingEvents.length);
 
   var count = 0;
   var async = require('async');
@@ -178,7 +202,6 @@ function loadExistingVotingEvents() {
       var _instance = VotingEvent.at(votingEventAddresses[count]);
       var _address = _instance.address;
       // var _name = _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (rs, err) {
-      //   console.log(rs);
       //   return new Promise((reject, resolve) => {
       //     if (err)
       //       return reject(err);
@@ -191,12 +214,10 @@ function loadExistingVotingEvents() {
       //     address: _address,
       //     name: name,
       //   }, function(err) {
-      //     console.log(err); // Error: "It broke"
       //   }
       // });
 
       _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (rs, err) {
-        console.log(count + " " + rs);
         votingEvents[count] = {
           instance: _instance,
           address: _address,
@@ -215,7 +236,6 @@ function loadExistingVotingEvents() {
   //   var _instance = VotingEvent.at(votingEventAddresses[i]);
   //   var _address = _instance.address;
   //   var _name = _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (rs, err) {
-  //     console.log(rs);
   //     return new Promise((reject, cb) => {
   //       if (err)
   //         return reject(err);
@@ -227,7 +247,6 @@ function loadExistingVotingEvents() {
   //   });
 
   //   var _name = _instance.name.call({ from: web3.eth.accounts[0], gas: 100000 }).then(function (rs, err) {
-  //     console.log(rs);
   //     votingEvents[i] = {
   //       instance: _instance,
   //       address: _address,
@@ -237,7 +256,6 @@ function loadExistingVotingEvents() {
 
   // }
   // setupEventRows();
-  console.log(votingEvents);
 }
 
 function loadVotingEvent(addr) {
@@ -254,14 +272,12 @@ function loadVotingEvent(addr) {
 }
 
 window.setupEventRows = function () {
-  console.log(votingEvents);
 
   var i = 0;
 
   // $("#votingEvent-rows").clear();
 
   votingEvents.forEach(function (votingEvent) {
-    console.log(votingEvent.name);
     $("#votingEvent-rows").append(
       "<tr><td><a href='event.html?addr=" + votingEvent.address + "&name=" + votingEvent.name + "'>"
       + votingEvent.name
@@ -286,34 +302,60 @@ function showEventDetails() {
   var addr = getParameterByName('addr');
   var name = getParameterByName('name');
   currentVotingEvent = loadVotingEvent(addr);
-  // console.log(currentVotingEvent);
   $('#eventName').text(name);
 }
 
 window.loadVotingEventResults = function () {
 
-  console.log('load results');
-  
+
+  var addr = getParameterByName('addr');
+  var index;
+  for (var i = 0; i < votingEventAddresses.length; ++i) {
+    if (votingEventAddresses[i] == addr) {
+      index = i;
+    }
+  }
+
+  index = 0;
+
+
+
+
+  var votingEventInstance;
+  if (currentVotingEvent != null) {
+    votingEventInstance = currentVotingEvent.instance;
+  } else {
+    votingEventInstance = VotingEvent.at(addr);
+  }
+
+  if (votingEventInstance == null) {
+    return;
+  }
+
+
+
+
+  // votingEventInstance.getCandidateVotesReceived.call(0, { from: web3.eth.accounts[0], gas: 100000 }).
+  //   then((rs) => {
+  //   }, err => {
+  //   });
+
+  // var candidateNames;
+
+
+
   // Load google charts
   google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(drawChart);
 
   // Draw the chart and set the chart values
   function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-      ['Task', 'Hours per Day'],
-      ['Work', 8],
-      ['Eat', 2],
-      ['TV', 4],
-      ['Gym', 2],
-      ['Sleep', 8]
-    ]);
+    var data = google.visualization.arrayToDataTable(votingEventInfo[index].voteData);
 
     // Optional; add a title and set the width and height of the chart
     var options = { 'title': 'Voting results', 'width': 550, 'height': 400 };
 
     // Display the chart inside the <div> element with id="piechart"
-    console.log(document.getElementById('piechart'));
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
     chart.draw(data, options);
   }
