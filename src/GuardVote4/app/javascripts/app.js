@@ -360,6 +360,17 @@ window.loadVotingEventResults = function () {
     chart.draw(data, options);
   }
 
+
+  //////////////
+
+  var voteData = votingEventInfo[index].voteData;
+  for (var i = 0; i < voteData.length; ++i) {
+    let cellType = i == 0 ? "th" : "td";
+    $("#votingResultTable").append("<tr><" + cellType + ">" + voteData[i][0] + "</" + cellType +
+     "><" + cellType + ">" + voteData[i][1] + "</" + cellType + ">" );
+    
+  } 
+
 }
 
 
