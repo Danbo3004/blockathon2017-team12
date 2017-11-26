@@ -32,7 +32,7 @@
       <input type="text" id="candidate" placeholder="Enter the candidate name"/>
       <br>
       <br>
-      <input type="text" id="vote-tokens" value="1" disabled="true" placeholder="Total no. of tokens to vote"/>
+      <input type="hidden" id="vote-tokens" value="1" disabled="true" placeholder="Total no. of tokens to vote"/>
       <br>
       <br>
       <a href="#" onclick="voteForCandidate()" class="btn btn-primary">Vote</a>
@@ -66,8 +66,8 @@
       <h2>Purchase Tokens</h2>
       <div class="col-sm-12">
         <div id="buy-msg"></div>
-        <input type="text" id="buy" value="1" disabled="true" class="col-sm-8" placeholder="Number of tokens to buy"/>&nbsp;
-        <a href="#" onclick="buyTokens()" class="btn btn-primary">Buy</a>
+        <input type="hidden" id="buy" value="1" disabled="true" class="col-sm-8" placeholder="Number of tokens to buy"/>&nbsp;
+        <a href="#" onclick="buyTokens()" class="btn btn-primary">Take a flag for vote</a>
       </div>
     </div>
     <div class="row margin-top-3">
